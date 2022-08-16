@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet } from "react-native";
+import Tabs from "./navigation/Tabs";
 import { Home, OrderDelivery, Restaurant } from "./screens";
 
 export default function App() {
@@ -12,9 +13,9 @@ export default function App() {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={"Home"}
+        initialRouteName={"HomeTabs"}
       >
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="HomeTabs" component={Tabs} />
         <Stack.Screen name="Restaurant" component={Restaurant} />
         <Stack.Screen name="OrderDelivery" component={OrderDelivery} />
       </Stack.Navigator>

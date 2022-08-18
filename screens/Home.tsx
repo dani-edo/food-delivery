@@ -1,3 +1,4 @@
+import { NavigationProp } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -16,22 +17,38 @@ import {
   initialCurrentLocation,
   restaurantData,
 } from "../dummy/home";
-import { CategoryDataType } from "../types/general";
+import { CategoryDataType, RestaurantDataType } from "../types/general";
 
-type Props = {};
+type Props = {
+  navigation: NavigationProp<any>;
+};
 
-const Home: React.FunctionComponent<Props> = () => {
+const Home: React.FunctionComponent<Props> = ({ navigation }) => {
   const [categories, setCategories] =
     useState<CategoryDataType[]>(categoryData);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryDataType | null>(null);
-  const [restaurants, setRestaurants] = useState(restaurantData);
+  const [restaurants, setRestaurants] =
+    useState<RestaurantDataType[]>(restaurantData);
   const [currentLocation, setCurrentLocation] = useState(
     initialCurrentLocation
   );
 
-  const onSelectCategory = (item: CategoryDataType) =>
+  const onSelectCategory = (item: CategoryDataType) => {
+    // filter restaurant
+    let restaurantList = restaurantData.filter((a) =>
+      a.categories.includes(item.id)
+    );
+
+    setRestaurants(restaurantList);
     setSelectedCategory(item);
+  };
+
+  const getCategoryNameById = (id: number) => {
+    const category = categories.filter((e) => e.id === id);
+    if (category) return category[0].name;
+    return "";
+  };
 
   const renderHeader = () => {
     return (
@@ -156,10 +173,119 @@ const Home: React.FunctionComponent<Props> = () => {
     );
   };
 
+  const renderRestaurantList = () => {
+    const renderItem = ({ item }: { item: RestaurantDataType }) => (
+      <TouchableOpacity
+        style={{ marginBottom: SIZES.padding * 2 }}
+        onPress={() => navigation.navigate("Restaurant", {
+          item,
+          currentLocation
+        })}
+      >
+        {/* Image */}
+        <View style={{ marginBottom: SIZES.padding * 2 }}>
+          <Image
+            source={item.photo}
+            resizeMode="cover"
+            style={{
+              width: "100%",
+              height: 200,
+              borderRadius: SIZES.radius,
+            }}
+          />
+          <View
+            style={{
+              position: "absolute",
+              left: 0,
+              bottom: 0,
+              height: 50,
+              width: SIZES.width * 0.3,
+              backgroundColor: "white",
+              borderTopRightRadius: SIZES.radius,
+              borderBottomLeftRadius: SIZES.radius,
+              alignItems: "center",
+              justifyContent: "center",
+              ...styles.shadow,
+            }}
+          >
+            <Text style={{ ...FONTS.h4 }}>{item.duration}</Text>
+          </View>
+        </View>
+
+        {/* Restaurant Info */}
+        <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            marginTop: SIZES.padding,
+          }}
+        >
+          {/* Rating */}
+          <Image
+            source={icons.star}
+            style={{
+              height: 20,
+              width: 20,
+              tintColor: COLORS.primary,
+              marginRight: 10,
+            }}
+          />
+          <Text style={{ ...FONTS.body3 }}>{item.rating}</Text>
+
+          {/* Cetagories */}
+          <View
+            style={{
+              flexDirection: "row",
+              marginLeft: 10,
+            }}
+          >
+            {item.categories.map((categoryId) => (
+              <View key={categoryId} style={{ flexDirection: "row" }}>
+                <Text style={{ ...FONTS.body3 }}>
+                  {getCategoryNameById(categoryId)}
+                </Text>
+                <Text style={{ ...FONTS.h3, color: COLORS.darkgray }}> . </Text>
+              </View>
+            ))}
+          </View>
+
+          {/* Price */}
+          {[1, 2, 3].map((priceRating) => (
+            <Text
+              key={priceRating}
+              style={{
+                ...FONTS.body3,
+                color:
+                  priceRating <= item.priceRating
+                    ? COLORS.black
+                    : COLORS.darkgray,
+              }}
+            >
+              $
+            </Text>
+          ))}
+        </View>
+      </TouchableOpacity>
+    );
+    return (
+      <FlatList
+        data={restaurants}
+        renderItem={renderItem}
+        keyExtractor={(item) => `${item.id}`}
+        contentContainerStyle={{
+          paddingHorizontal: SIZES.padding * 2,
+          paddingBottom: 30,
+        }}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {renderHeader()}
       {renderMainCategories()}
+      {renderRestaurantList()}
     </SafeAreaView>
   );
 };

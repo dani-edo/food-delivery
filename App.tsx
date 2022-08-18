@@ -6,6 +6,12 @@ import { StyleSheet } from "react-native";
 import Tabs from "./navigation/Tabs";
 import { Home, OrderDelivery, Restaurant } from "./screens";
 
+type RootStackParamList = {
+  HomeTabs: undefined;
+  Restaurant: undefined;
+  OrderDelivery: undefined;
+};
+
 export default function App() {
   const [loaded] = useFonts({
     "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
@@ -17,7 +23,7 @@ export default function App() {
     return null;
   }
 
-  const Stack = createStackNavigator();
+  const Stack = createStackNavigator<RootStackParamList>();
 
   return (
     <>

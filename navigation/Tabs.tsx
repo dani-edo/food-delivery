@@ -110,6 +110,7 @@ const Tabs = () => {
           backgroundColor: "transparent",
           elevation: 0, //android
         },
+        headerShown: false,
       }}
       tabBar={(props) => <CustomTabBar props={props} />}
     >

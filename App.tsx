@@ -1,10 +1,21 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useFonts } from "expo-font";
 import { StyleSheet } from "react-native";
 import Tabs from "./navigation/Tabs";
 import { Home, OrderDelivery, Restaurant } from "./screens";
 
 export default function App() {
+  const [loaded] = useFonts({
+    "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
+    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
   const Stack = createStackNavigator();
 
   return (

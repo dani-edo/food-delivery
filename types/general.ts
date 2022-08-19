@@ -37,3 +37,11 @@ export interface Menu {
   calories: number;
   price: number;
 }
+
+export interface CurrentLocationType {
+  streetName: string;
+  gps: {
+    latitude: number;
+    longitude: number;
+  };
+}

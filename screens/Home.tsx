@@ -177,10 +177,12 @@ const Home: React.FunctionComponent<Props> = ({ navigation }) => {
     const renderItem = ({ item }: { item: RestaurantDataType }) => (
       <TouchableOpacity
         style={{ marginBottom: SIZES.padding * 2 }}
-        onPress={() => navigation.navigate("Restaurant", {
-          item,
-          currentLocation
-        })}
+        onPress={() =>
+          navigation.navigate("Restaurant", {
+            item,
+            currentLocation,
+          })
+        }
       >
         {/* Image */}
         <View style={{ marginBottom: SIZES.padding * 2 }}>

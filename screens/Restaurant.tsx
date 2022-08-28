@@ -158,6 +158,50 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
                 <Text style={{ ...FONTS.body1 }}>+</Text>
               </TouchableOpacity>
             </View>
+
+            {/* Name & Description */}
+            <View
+              style={{
+                width: SIZES.width,
+                paddingHorizontal: SIZES.padding * 2,
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{ marginVertical: 10, ...FONTS.h2, textAlign: "center" }}
+              >
+                {item.name} - {item.price.toFixed(2)}
+              </Text>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  textAlign: "center",
+                }}
+              >
+                {item.description}
+              </Text>
+            </View>
+
+            {/* Calories */}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 10,
+              }}
+            >
+              <Image
+                source={icons.fire}
+                style={{
+                  width: 20,
+                  height: 20,
+                  marginRight: 10,
+                }}
+              />
+              <Text style={{ ...FONTS.body3, color: COLORS.darkgray }}>
+                {item.calories.toFixed(2)} cal
+              </Text>
+            </View>
           </View>
         ))}
       </Animated.ScrollView>

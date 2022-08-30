@@ -82,6 +82,14 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
     return 0;
   };
 
+  const getBasketItemCount = () => {
+    return orderItems.reduce((a, b) => a + (b.qty || 0), 0);
+  };
+
+  const sumOrder = () => {
+    return orderItems.reduce((a, b) => a + (b.total || 0), 0).toFixed(2);
+  }
+
   const renderHeader = () => {
     return (
       <View
@@ -337,8 +345,10 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
               borderBottomWidth: 1,
             }}
           >
-            <Text style={{ ...FONTS.h3 }}>items in Cart</Text>
-            <Text style={{ ...FONTS.h3 }}>$45</Text>
+            <Text style={{ ...FONTS.h3 }}>
+              {getBasketItemCount()} items in Cart
+            </Text>
+            <Text style={{ ...FONTS.h3 }}>${sumOrder()}</Text>
           </View>
           <View
             style={{

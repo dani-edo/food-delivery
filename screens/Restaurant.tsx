@@ -19,11 +19,19 @@ type Props = {
   navigation: NavigationProp<any>;
   route: RouteProp<any>;
 };
+type OrderItem = {
+  menuId: number;
+  qty: number;
+  price: number;
+  total: number;
+};
+
 const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
   const scrollX = new Animated.Value(0);
   const [restaurant, setRestaurant] = useState<RestaurantDataType | null>(null);
   const [currentLocation, setCurrentLocation] =
     useState<CurrentLocationType | null>(null);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   useEffect(() => {
     if (route.params) {
@@ -32,6 +40,47 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
       setCurrentLocation(currentLocation);
     }
   });
+
+  const editOrder = (action: string, menuId: number, price: number) => {
+    let orderList = orderItems.slice();
+    let item = orderList.filter((a) => a.menuId == menuId);
+
+    if (action === "+") {
+      if (item.length > 0) {
+        let newQty = item[0].qty + 1;
+        item[0].qty = newQty;
+        item[0].total = item[0].qty * price;
+      } else {
+        const newItem = {
+          menuId: menuId,
+          qty: 1,
+          price: price,
+          total: price,
+        };
+        orderList.push(newItem);
+      }
+      setOrderItems(orderList);
+    } else {
+      if (item.length > 0) {
+        if (item[0].qty > 0) {
+          let newQty = item[0].qty - 1;
+          item[0].qty = newQty;
+          item[0].total = item[0].qty * price;
+        }
+        setOrderItems(orderList);
+      }
+    }
+  };
+
+  const getOrderQty = (menuId: number) => {
+    let orderItem = orderItems.filter((a) => a.menuId === menuId);
+
+    if (orderItem.length > 0) {
+      return orderItem[0].qty;
+    }
+
+    return 0;
+  };
 
   const renderHeader = () => {
     return (
@@ -138,6 +187,7 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
                   borderTopLeftRadius: 25,
                   borderBottomLeftRadius: 25,
                 }}
+                onPress={() => editOrder("-", item.menuId, item.price)}
               >
                 <Text style={{ ...FONTS.body1 }}>-</Text>
               </TouchableOpacity>
@@ -150,7 +200,7 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
                   justifyContent: "center",
                 }}
               >
-                <Text style={{ ...FONTS.h2 }}>5</Text>
+                <Text style={{ ...FONTS.h2 }}>{getOrderQty(item.menuId)}</Text>
               </View>
               <TouchableOpacity
                 style={{
@@ -162,6 +212,7 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
                   borderTopRightRadius: 25,
                   borderBottomRightRadius: 25,
                 }}
+                onPress={() => editOrder("+", item.menuId, item.price)}
               >
                 <Text style={{ ...FONTS.body1 }}>+</Text>
               </TouchableOpacity>

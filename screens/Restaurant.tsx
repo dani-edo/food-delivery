@@ -88,7 +88,7 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
 
   const sumOrder = () => {
     return orderItems.reduce((a, b) => a + (b.total || 0), 0).toFixed(2);
-  }
+  };
 
   const renderHeader = () => {
     return (
@@ -405,6 +405,12 @@ const Restaurant: React.FunctionComponent<Props> = ({ navigation, route }) => {
                 padding: SIZES.padding,
                 borderRadius: SIZES.radius,
               }}
+              onPress={() =>
+                navigation.navigate("OrderDelivery", {
+                  restaurant: restaurant,
+                  currentLocation: currentLocation,
+                })
+              }
             >
               <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Order</Text>
             </TouchableOpacity>

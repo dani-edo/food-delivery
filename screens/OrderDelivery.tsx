@@ -1,13 +1,13 @@
 import { NavigationAction, RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import MapView, {
   AnimatedRegion,
   LatLng,
   Marker,
   PROVIDER_GOOGLE,
 } from "react-native-maps";
-import { SIZES } from "../constants";
+import { COLORS, icons, SIZES } from "../constants";
 import {
   CurrentLocationType,
   Region,
@@ -63,9 +63,40 @@ const OrderDelivery: React.FunctionComponent<Props> = ({
   }, []);
 
   const renderMap = () => {
-    const destinationMarker = () => <Marker coordinate={toLocation}>
-      
-    </Marker>;
+    const destinationMarker = () => (
+      <Marker coordinate={toLocation}>
+        <View
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            backgroundColor: COLORS.white,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+              backgroundColor: COLORS.primary,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              source={icons.pin}
+              style={{
+                width: 25,
+                height: 25,
+                tintColor: COLORS.white,
+              }}
+            />
+          </View>
+        </View>
+      </Marker>
+    );
     return (
       <View style={styles.container}>
         <MapView

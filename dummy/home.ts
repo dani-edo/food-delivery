@@ -3,10 +3,10 @@
 import { icons, images } from "../constants";
 
 export const initialCurrentLocation = {
-  streetName: "Yogyakarta",
+  streetName: "Kuching",
   gps: {
-    latitude: -7.797068,
-    longitude: 110.370529,
+    latitude: 1.5496614931250685,
+    longitude: 110.36381866919922,
   },
 };
 
